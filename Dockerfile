@@ -1,7 +1,5 @@
-FROM phusion/baseimage:18.04-1.0.0
+FROM ubuntu:20.04
 LABEL maintainer="El Niño <info@elnino.tech>"
-
-CMD ["/sbin/my_init"]
 
 ENV LC_ALL "en_US.UTF-8"
 ENV LANGUAGE "en_US.UTF-8"
@@ -18,22 +16,25 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ENV HOME "/root"
 
-RUN apt-add-repository ppa:brightbox/ruby-ng
-RUN apt-get update
-RUN apt-get -y install --no-install-recommends \
+RUN apt-get update && \
+    apt-get -y install --no-install-recommends \
     curl \
-    openjdk-8-jdk \
+    openjdk-11-jdk \
     unzip \
     zip \
     git \
-    ruby2.4 \
-    ruby2.4-dev \
+    ruby2.7 \
+    ruby2.7-dev \
     build-essential \
     file \
-    ssh
+    ssh && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD https://dl.google.com/android/repository/commandlinetools-linux-${VERSION_SDK_TOOLS}_latest.zip /tools.zip
-RUN mkdir -p "${ANDROID_SDK_ROOT}/cmdline-tools" && unzip /tools.zip -d "${ANDROID_SDK_ROOT}/cmdline-tools" && rm -rf /tools.zip
+RUN mkdir -p "${ANDROID_SDK_ROOT}/cmdline-tools" && \
+    unzip /tools.zip -d "${ANDROID_SDK_ROOT}/cmdline-tools" && \
+    rm -rf /tools.zip
 
 RUN yes | ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager --licenses
 
@@ -47,5 +48,3 @@ ADD id_rsa $HOME/.ssh/id_rsa
 ADD id_rsa.pub $HOME/.ssh/id_rsa.pub
 ADD adbkey $HOME/.android/adbkey
 ADD adbkey.pub $HOME/.android/adbkey.pub
-
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
