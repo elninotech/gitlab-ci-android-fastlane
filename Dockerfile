@@ -11,7 +11,7 @@ ENV VERSION_TARGET_SDK "30"
 
 ENV ANDROID_SDK_ROOT "/sdk"
 
-ENV PATH "$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/tools:${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin:${ANDROID_SDK_ROOT}/platform-tools"
+ENV PATH "$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools:${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools/bin:${ANDROID_SDK_ROOT}/platform-tools"
 ENV DEBIAN_FRONTEND noninteractive
 
 ENV HOME "/root"
@@ -36,11 +36,11 @@ RUN mkdir -p "${ANDROID_SDK_ROOT}/cmdline-tools" && \
     unzip /tools.zip -d "${ANDROID_SDK_ROOT}/cmdline-tools" && \
     rm -rf /tools.zip
 
-RUN yes | ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager --licenses
+RUN yes | ${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools/bin/sdkmanager --licenses
 
 RUN mkdir -p $HOME/.android && touch $HOME/.android/repositories.cfg
-RUN ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager "platform-tools" "tools" "platforms;android-${VERSION_TARGET_SDK}" "build-tools;${VERSION_BUILD_TOOLS}"
-RUN ${ANDROID_SDK_ROOT}/cmdline-tools/tools/bin/sdkmanager "extras;android;m2repository" "extras;google;google_play_services" "extras;google;m2repository"
+RUN ${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools/bin/sdkmanager "platform-tools" "tools" "platforms;android-${VERSION_TARGET_SDK}" "build-tools;${VERSION_BUILD_TOOLS}"
+RUN ${ANDROID_SDK_ROOT}/cmdline-tools/cmdline-tools/bin/sdkmanager "extras;android;m2repository" "extras;google;google_play_services" "extras;google;m2repository"
 
 RUN gem install fastlane
 
