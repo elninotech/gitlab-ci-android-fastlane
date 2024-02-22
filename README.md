@@ -11,7 +11,7 @@ cat ~/.ssh/id_rsa
 A `.gitlab-ci.yml` with caching of your project's dependencies would look like this:
 
 ```
-image: unitedclassifiedsapps/gitlab-ci-android-fastlane
+image: victorlap/gitlab-ci-android-fastlane
 
 stages:
 - build
